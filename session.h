@@ -23,6 +23,7 @@ public:
 	~Session() {}
 	socket_ptr socket() {return _socket;}
 	User* getUser() {return _user;}
+	void write(Packet);
 	void setUser(User* u) {_user=u;}	
 	void start();
 };

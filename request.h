@@ -41,9 +41,19 @@ private:
 	std::string msg;
 	Session* s;
 public:
-	UserLogin(string m,Session* session):msg(m),s(session) {}
+	UserLogin(std::string m,Session* session):msg(m),s(session) {}
 	~UserLogin() {}	
 	void run();	
+};
+class JoinRoom:public Request {
+private:
+	std::string msg;
+	Session* session;
+public:
+	JoinRoom(std::string m,Session* s):msg(m),session(s) {}
+	~JoinRoom() {}
+	void run();
+
 };
 //-----from server-to-client
 class PrintToSocket:public Request {
@@ -55,5 +65,7 @@ public:
 	~PrintToSocket() {}	
 	void run();
 };
+
+
 
 #endif

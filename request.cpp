@@ -24,3 +24,6 @@ void PrintToSocket::run() {
 		bufs.pop();
 	}
 }
+void JoinRoom::run() {
+	
+}

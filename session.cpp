@@ -17,12 +17,13 @@ void Session::bodyHandler(boost::system::error_code ec,char *body) {
 	char * cmdc=new char[2];
 	cmdc[0]=msg[0];
 	cmdc[1]=msg[1];
-	std::string cmd=cmdc;
 	msg.erase(0,2);
-	if (cmd=="00") {
-		_server->push_request(new WriteToScreen(msg));
-	} else if (cmd=="01") {
-		_server->push_request(new UserLogin(msg,this));
+	istringstream iss(cmdc);
+	int cmd;
+	iss>>std::hex>>cmd;
+	switch (cmd) {
+		case 0:_server->push_request(new WriteToScreen(msg));break;
+		case 1:_server->push_request(new UserLogin(msg,this));break;
 	}
 
 	char * head=new char[8];
@@ -32,4 +33,14 @@ void Session::start() {
 	char * head=new char[8];
 	_server->push_request(new PrintToSocket("welcome",this));
 	async_read(*_socket,buffer(head,8),boost::bind(&Session::headHandler,this,placeholders::error,head));
+}
+void Session::write(Packet p) {
+	using namespace boost::asio;
+	std::queue<Buf> bufs=p.getBuffers();
+	boost::system::error_code ec;
+	while(!bufs.empty()) {
+		Buf b=bufs.front();
+		boost::asio::write(*_socket,buffer(b.msg,b.length),ec);
+		bufs.pop();
+	}
 }

@@ -9,13 +9,13 @@
 #include <string>
 
 class Server;
+class Request;
 class UserVariable;
 class Room;
 
 using namespace std;
 class Room {
 private:
-	Server* _server;	
 	vector<User*> _users;
 	unsigned _capacity;
 	unsigned _size;
@@ -32,6 +32,8 @@ public:
 	User* getUserByName(string);
 	vector<User*> getAllUsers() {return _users;}
 	//-----------------------------------
+	virtual void start()=0;
+	virtual void requestHandler(Request*)=0;	
 	//------------------------------------
 	unsigned capacity() {return _capacity;}
 	unsigned size() {return _size;}
