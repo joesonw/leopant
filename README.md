@@ -1,7 +1,7 @@
 #Quick Start
 
-'''cpp
+```cpp
 Server s(8011);
 s.start();
 
-'''
+```
