@@ -1,6 +1,5 @@
 #ifndef MMO_SERVER_USER
 #define MMO_SERVER_USER
-#include "event.h"
 #include <string>
 
 class User;
@@ -17,9 +16,8 @@ private:
 	int _id;		
 	string _name;
 public:
-	User(int id,string name):_id(id),_name(name) {}
+	User(string name):_name(name) {}
 	~User() {}
-	void dispatch(Event) {}
 	int getId() {return _id;}
 	string getName() {return _name;}
 };

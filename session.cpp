@@ -14,33 +14,37 @@ void Session::headHandler(boost::system::error_code ec,char* head) {
 }
 void Session::bodyHandler(boost::system::error_code ec,char *body) {
 	std::string msg=body;
-	char * cmdc=new char[2];
-	cmdc[0]=msg[0];
-	cmdc[1]=msg[1];
-	msg.erase(0,2);
-	istringstream iss(cmdc);
-	int cmd;
-	iss>>std::hex>>cmd;
+	AnyArray ary=Packet::unpack(body);
+	int cmd=ary.readInt("cmd");
 	switch (cmd) {
-		case 0:_server->push_request(new WriteToScreen(msg));break;
-		case 1:_server->push_request(new UserLogin(msg,this));break;
+		case Request::PRINT_TO_SERVER:
+			_server->push_request(new PrintToServer(ary,this));
+			break;
 	}
-
 	char * head=new char[8];
 	async_read(*_socket,buffer(head,8),boost::bind(&Session::headHandler,this,placeholders::error,head));
 }
 void Session::start() {
 	char * head=new char[8];
-	_server->push_request(new PrintToSocket("welcome",this));
+	AnyArray args;
+	AnyArray argItem;
+	args.write("item1",string("message1"));
+	args.write("item2",2);
+	args.write("item3",3.3);
+	argItem.write("item1",string("message2"));
+	argItem.write("item2",2);
+	argItem.write("item3",3.3);
+	args.write("array",argItem);
+	Session::write(args);	
 	async_read(*_socket,buffer(head,8),boost::bind(&Session::headHandler,this,placeholders::error,head));
 }
-void Session::write(Packet p) {
+void Session::write(AnyArray p) {
 	using namespace boost::asio;
-	std::queue<Buf> bufs=p.getBuffers();
+	std::string bufs=Packet::pack(p);
 	boost::system::error_code ec;
-	while(!bufs.empty()) {
-		Buf b=bufs.front();
-		boost::asio::write(*_socket,buffer(b.msg,b.length),ec);
-		bufs.pop();
-	}
+	ostringstream oss;
+	oss<<std::setw(Packet::header_length)<<std::hex<<bufs.length();
+	std::string header=oss.str();
+	boost::asio::write(*_socket,buffer(header,8),ec);	
+	boost::asio::write(*_socket,buffer(bufs,bufs.length()),ec);
 }

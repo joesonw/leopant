@@ -3,6 +3,9 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/any.hpp>
+#include <iomanip>
+#include <map>
 #include "user.h"
 #include "request.h"
 
@@ -22,9 +25,9 @@ public:
 	Session(Server* server,socket_ptr s):_server(server),_socket(s) {}
 	~Session() {}
 	socket_ptr socket() {return _socket;}
-	User* getUser() {return _user;}
-	void write(Packet);
-	void setUser(User* u) {_user=u;}	
+	User* user() {return _user;}
+	void setUser(User *u) {_user=u;}
+	void write(AnyArray);
 	void start();
 };
 

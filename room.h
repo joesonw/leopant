@@ -1,28 +1,29 @@
 #ifndef MMO_SERVER_ROOM
 #define MMO_SERVER_ROOM
 #include "user.h"
-#include "event.h"
-#include "application.h"
-#include "onetoone.h"
 #include <vector>
 #include <map>
 #include <string>
+#include "event.h"
+#include "request.h"
 
 class Server;
-class Request;
 class UserVariable;
 class Room;
 
 using namespace std;
 class Room {
-private:
+protected:
 	vector<User*> _users;
+	vector<Session*> _sessions;
 	unsigned _capacity;
 	unsigned _size;
 	string _id;
 	string _name;	
-	void _notifyAll(Event);
-	map<User*,UserVariable> _roomUserVariables;
+	//map<User*,OneToOne<string,void*> > _roomUserVariables;
+	//OneToOne<string,void*> _roomVariables;
+
+	int loggedin(Session* s);
 public:
 	Room(string,unsigned);
 	~Room();
@@ -34,6 +35,7 @@ public:
 	//-----------------------------------
 	virtual void start()=0;
 	virtual void requestHandler(Request*)=0;	
+	virtual void eventHandler(Event*)=0;
 	//------------------------------------
 	unsigned capacity() {return _capacity;}
 	unsigned size() {return _size;}
@@ -42,11 +44,6 @@ public:
 	bool isEmpty() {return _size==0;}
 	bool isFull() {return _capacity==_size;}
 
-};
-class UserVariable {
-public:
-	UserVariable() {}
-	~UserVariable() {}
 };
 
 

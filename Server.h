@@ -1,5 +1,4 @@
-#ifndef MMO_SERVER_MAIN
-#define MMO_SERVER_MAIN
+#ifndef MMO_SERVER_MAIN #define MMO_SERVER_MAIN
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <boost/shared_ptr.hpp>
@@ -9,10 +8,12 @@
 #include <sstream>
 #include <algorithm>
 #include "request.h"
+#include "room.h"
 
 class Session;
 
 using namespace boost::asio;
+using std::vector;
 typedef boost::shared_ptr<ip::tcp::socket> socket_ptr;
 class Server {
 private:
@@ -26,31 +27,20 @@ private:
 	boost::condition_variable requests_cond;
 
 
-	std::vector<bool> reading;
-
-
 	std::vector<Session*> sessions;
+	std::vector<Room*> rooms;
 	std::queue<Request*> requests;
 	
 	void start_accept();
 	void accept_handler(socket_ptr s,boost::system::error_code ec);
-	void requests_handler() {
-		for (;;) {
-			boost::unique_lock<boost::mutex> lock(requests_mutex);
-			while(requests.empty()) {
-				requests_cond.wait(lock);
-			}
-			Request* r=requests.front();
-			requests.pop();
-			r->run();
-		}
-	}
-
+	void requests_handler();
 public:
 	Server(int port):_port(port),endpoint(ip::tcp::v4(),port),acceptor(_ios,endpoint) {
 	}
 	void start() {
 		std::cout<<"Server start at port "<<_port<<std::endl;
+		for (unsigned i=0;i<rooms.size();i++)
+			rooms[i]->start();
 		boost::thread t1(boost::bind(&Server::requests_handler,this));
 		start_accept();
 		_ios.run();
@@ -58,8 +48,11 @@ public:
 	void remove(Session* s) {
 		sessions.erase(std::find(sessions.begin(),sessions.end(),s));
 	}
-	void stop() {
+	void stop() {}
+	void join_room(Room* r) {
+		rooms.push_back(r);
 	}
+	void user_join_room(Session* s,string name);
 	void push_request(Request* r) {
 		boost::unique_lock<boost::mutex> lock(requests_mutex);
 		requests.push(r);

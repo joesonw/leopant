@@ -1,14 +1,10 @@
 #include "room.h"
+#include "session.h"
 
 Room::Room(string name,unsigned cap):_capacity(cap),_size(0),_name(name) {
 }
 Room::~Room() {
 
-}
-void Room::_notifyAll(Event e) {
-	for (vector<User*>::iterator i=_users.begin();i!=_users.end();i++) {
-		(*i)->dispatch(e);	
-	}
 }
 void Room::addUser(User* u) {
 	_users.push_back(u);
@@ -37,4 +33,6 @@ User* Room::getUserByName(string name) {
 	}
 	return 0;
 }
-
+int Room::loggedin(Session*s ) {
+	return s->user()==0;
+}
