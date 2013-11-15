@@ -10,7 +10,9 @@ s.start();
 ## Data Communication Protocols/Means
 
 format:`{value_type,value_name,value},`
-type_table
+
+type_table:
+
 |       type    | value  |
 | ------------- | :----: |
 | string        | 0      |
