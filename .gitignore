@@ -1,4 +1,5 @@
 *.o
 *.swp
 *.*.swp
+*.pyc
 server

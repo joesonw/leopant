@@ -3,9 +3,7 @@
 
 Room::Room(string name,unsigned cap):_capacity(cap),_size(0),_name(name) {
 }
-Room::~Room() {
-
-}
+Room::~Room() {}
 void Room::addUser(User* u) {
 	_users.push_back(u);
 }
