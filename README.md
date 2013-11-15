@@ -34,7 +34,7 @@ arguments.write("i'm an array",array);
 string buf=Packet::pack(arguments);
 ```
 this will give
-```cpp
+```
 {0,i'm a string,hello world},{1,i'm an integer,101},{2,i'm a float,1.01},{3,i'm an array,{0,i'm a string too,hello world 2},{1,i'm an integer too,101},{2,i'm a float too,1.01},},
 ```
 And vice versa, you can use `Packet::unpack(string)` to make a data string into AnyArray.
