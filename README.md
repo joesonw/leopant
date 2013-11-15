@@ -9,13 +9,10 @@ s.start();
 ```
 ## Data Communication Protocols/Means
 
-format
-```cpp
-{value_type,value_name,value},
-```
+format:`{value_type,value_name,value},`
 type_table
-|       type    | value  | 
-| ------------- | ------ |
+|       type    | value  |
+| ------------- | :----: |
 | string        | 0      |
 | int           | 1      |
 | float/double  | 2      |
@@ -38,8 +35,8 @@ this will give
 ```cpp
 {0,i'm a string,hello world},{1,i'm an integer,101},{2,i'm a float,1.01},{3,i'm an array,{0,i'm a string too,hello world 2},{1,i'm an integer too,101},{2,i'm a float too,1.01},},
 ```
-And vice versa, you can use ```cpp Packet::unpack(string)``` to make a data string into AnyArray.
-following methods can be used to retrieve data from ```cpp AnyArray```
+And vice versa, you can use `Packet::unpack(string)` to make a data string into AnyArray.
+following methods can be used to retrieve data from `AnyArray`
 ```cpp
 string AnyArray::readString(string);
 int AnyArray::readInt(string);
