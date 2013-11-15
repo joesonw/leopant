@@ -14,12 +14,12 @@ format
 {value_type,value_name,value},
 ```
 type_table
-| value_type    |   | 
-| ------------- | - |
-| string        | 0 |
-| int           | 1 |
-| float/double  | 2 |
-| array         | 3 |
+|       type    | value  | 
+| ------------- | ------ |
+| string        | 0      |
+| int           | 1      |
+| float/double  | 2      |
+| array         | 3      |
 
 simple usage of functions/datatypes
 ```cpp
