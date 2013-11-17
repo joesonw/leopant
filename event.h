@@ -21,6 +21,7 @@ public:
 	Session* session() {return  _session;}
 	virtual int type()=0;
 };
+namespace event {	
 class UserJoined:public Event {
 public:
 	UserJoined(Session* s):Event(s) {}
@@ -39,9 +40,7 @@ public:
 	~UserMessage() {}
 	int type() {return Event::UserMessage;}
 };
-
-
-
+};
 
 
 

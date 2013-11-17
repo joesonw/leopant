@@ -6,6 +6,7 @@
 #include <string>
 #include "event.h"
 #include "request.h"
+#include <boost/function.hpp>
 
 class Server;
 class UserVariable;
@@ -22,19 +23,18 @@ protected:
 	string _name;	
 	//map<User*,OneToOne<string,void*> > _roomUserVariables;
 	//OneToOne<string,void*> _roomVariables;
-
 	int loggedin(Session* s);
 public:
+	boost::function<void(Request*)> push_request;
 	Room(string,unsigned);
 	~Room();
-	void addUser(User*);
 	int hasUser(User*);
+	int hasSession(Session *);
 	User* getUserById(int);
 	User* getUserByName(string);
 	vector<User*> getAllUsers() {return _users;}
 	//-----------------------------------
 	virtual void start()=0;
-	virtual void requestHandler(Request*)=0;	
 	virtual void eventHandler(Event*)=0;
 	//------------------------------------
 	unsigned capacity() {return _capacity;}

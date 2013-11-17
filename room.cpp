@@ -4,10 +4,13 @@
 Room::Room(string name,unsigned cap):_capacity(cap),_size(0),_name(name) {
 }
 Room::~Room() {}
-void Room::addUser(User* u) {
-	_users.push_back(u);
+int Room::hasSession(Session* s) {
+	for (unsigned i=0;i<_sessions.size();i++) {
+		if (_sessions[i]==s)
+			return 1;
+	}
+	return 0;
 }
-
 int Room::hasUser(User* u) { 
 	for (vector<User*>::iterator i=_users.begin();i!=_users.end();i++) {
 		if (*i==u)

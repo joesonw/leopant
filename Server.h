@@ -15,6 +15,7 @@ class Session;
 using namespace boost::asio;
 using std::vector;
 typedef boost::shared_ptr<ip::tcp::socket> socket_ptr;
+typedef boost::shared_ptr<std::vector<Room*> > room_ptr;
 class Server {
 private:
 	io_service	_ios;
@@ -41,7 +42,7 @@ public:
 		std::cout<<"Server start at port "<<_port<<std::endl;
 		for (unsigned i=0;i<rooms.size();i++)
 			rooms[i]->start();
-		boost::thread t1(boost::bind(&Server::requests_handler,this));
+		//boost::thread t1(boost::bind(&Server::requests_handler,this));
 		start_accept();
 		_ios.run();
 	}
@@ -50,6 +51,7 @@ public:
 	}
 	void stop() {}
 	void join_room(Room* r) {
+		r->push_request=boost::bind(&Server::push_request,this,_1);
 		rooms.push_back(r);
 	}
 	void user_join_room(Session* s,string name);

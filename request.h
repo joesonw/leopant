@@ -25,38 +25,51 @@ public:
 	virtual int type()=0;
 	enum {
 		PRINT_TO_SERVER,
-		USER_LOGIN,
-		JOIN_ROOM,
-		PRINT_TO_SOCKET,
-		USER_DC
+		USER_CONNECT,
+		USER_DISCONNECT,
+		USER_JOIN_ROOM,
+		USER_MESSAGE,
+		PRINT_TO_SOCKET
 	};
 };
+namespace request{
 class PrintToServer:public Request {
 public:
 	PrintToServer(AnyArray a,Session* s):Request(a,s) {}
 	~PrintToServer() {}
 	int type() {return Request::PRINT_TO_SERVER;}
 };
-class UserLogin:public Request {
+class UserConnect:public Request {
 public:
-	UserLogin(AnyArray a,Session* s):Request(a,s) {}
-	~UserLogin() {}	
-	int type() {return Request::USER_LOGIN;}
+	UserConnect(Session* s):Request(s) {}
+	~UserConnect() {}	
+	int type() {return Request::USER_CONNECT;}
 };
-class UserDisconnected:public Request {
+class UserDisconnect:public Request {
 public:
-	UserDisconnected(Session* s):Request(s) {}
-	~UserDisconnected() {}
-	int verbose() {return Request::USER_DC;}
+	UserDisconnect(Session* s):Request(s) {}
+	~UserDisconnect() {}
+	int type() {return Request::USER_DISCONNECT;}
 };
-
-//-----from server-to-client
+class UserJoinRoom:public Request {
+public:
+	UserJoinRoom(AnyArray a,Session* s):Request(a,s){}
+	~UserJoinRoom() {}
+	int type() {return Request::USER_JOIN_ROOM;}
+};
+class UserMessage:public Request {
+public:
+	UserMessage(AnyArray a,Session *s):Request(a,s) {}
+	~UserMessage() {}
+	int type() {return Request::USER_MESSAGE;}
+};
 class PrintToSocket:public Request {
 public:
 	PrintToSocket(AnyArray a,Session* s):Request(a,s) {}
 	~PrintToSocket() {}	
 	int type() {return Request::PRINT_TO_SOCKET;}
 };
+}
 
 
 
