@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include <map>
+#include <algorithm>
 using namespace std;
 using boost::any;
 using boost::any_cast;
@@ -48,6 +49,10 @@ public:
 		if (data[name].type()==typeid(AnyArray)) {
 			return any_cast<AnyArray>(data[name]);
 		}
+	}
+	int hasKey(string name) {
+		map<string,any>::iterator it=data.find(name);
+		return !(it==data.end());
 	}
 		
 };

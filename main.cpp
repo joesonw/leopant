@@ -19,7 +19,6 @@ public:
 				p.write("message",string("left"));
 				_sessions.erase(std::find(_sessions.begin(),_sessions.end(),e->session()));
 				for (unsigned i=0;i<_sessions.size();i++) {
-					//push_request(new request::PrintToSocket(p,_sessions[i]));
 					_sessions[i]->write(p);
 				}
 				break;
@@ -29,7 +28,6 @@ public:
 				AnyArray p;	
 				p.write("message",args.readString("message"));
 				for (unsigned i=0;i<_sessions.size();i++) {
-					//push_request(new request::PrintToSocket(p,_sessions[i]));
 					if (_sessions[i]!=e->session())	
 						_sessions[i]->write(p);
 				}

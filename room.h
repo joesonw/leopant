@@ -3,13 +3,13 @@
 #include "user.h"
 #include <vector>
 #include <map>
+#include <algorithm>
 #include <string>
 #include "event.h"
 #include "request.h"
 #include <boost/function.hpp>
 
 class Server;
-class UserVariable;
 class Room;
 
 using namespace std;
@@ -37,6 +37,9 @@ public:
 	virtual void start()=0;
 	virtual void eventHandler(Event*)=0;
 	//------------------------------------
+	void remove(Session* s) {
+		_sessions.erase(std::find(_sessions.begin(),_sessions.end(),s));
+	}
 	unsigned capacity() {return _capacity;}
 	unsigned size() {return _size;}
 	string getId() {return _id;}
