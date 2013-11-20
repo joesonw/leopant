@@ -32,6 +32,7 @@ void Session::bodyHandler(boost::system::error_code ec,char *body,int size) {
 	} else {
 		std::string msg(body,size);
 		AnyArray args=Packet::unpack(msg);
+		cout<<"handling:"<<msg<<endl;
 		int cmd=-1;
 		if (args.hasKey("request_type")) {
 			cmd=args.readInt("request_type");
@@ -74,6 +75,7 @@ void Session::start() {
 void Session::write(AnyArray p) {
 	using namespace boost::asio;
 	std::string bufs=Packet::pack(p);
+	cout<<"writting:"<<bufs<<endl;
 	boost::system::error_code ec;
 	ostringstream oss;
 	oss<<std::setw(Packet::header_length)<<std::hex<<bufs.length();

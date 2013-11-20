@@ -26,6 +26,7 @@ public:
 			case Event::UserMessage: {
 				AnyArray args=e->args();
 				AnyArray p;	
+				p.write("event_type",2);
 				p.write("message",args.readString("message"));
 				for (unsigned i=0;i<_sessions.size();i++) {
 					if (_sessions[i]!=e->session())	
